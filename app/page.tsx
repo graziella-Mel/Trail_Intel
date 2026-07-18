@@ -516,6 +516,12 @@ export default function Home() {
 
   useEffect(() => {
     if (!points.length || !mapContainer.current || map.current) return;
+    if (!MAPBOX_TOKEN) {
+      console.error(
+        "Interactive map unavailable: NEXT_PUBLIC_MAPBOX_TOKEN was not provided at build time.",
+      );
+      return;
+    }
     mapboxgl.accessToken = MAPBOX_TOKEN;
     const bounds = points.reduce(
       (b, p) => b.extend([p.lon, p.lat]),

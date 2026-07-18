@@ -135,6 +135,12 @@ export default function LiveHike() {
   }, [session?.id, session?.state]);
   useEffect(() => {
     if (!route.length || !container.current) return;
+    if (!TOKEN) {
+      console.error(
+        "Interactive map unavailable: NEXT_PUBLIC_MAPBOX_TOKEN was not provided at build time.",
+      );
+      return;
+    }
     mapboxgl.accessToken = TOKEN;
     map.current?.remove();
     const bounds = route.reduce(
