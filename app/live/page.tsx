@@ -78,11 +78,15 @@ export default function LiveHike() {
     () => true,
   );
   const container = useRef<HTMLDivElement>(null),
+    sheet = useRef<HTMLElement>(null),
     map = useRef<mapboxgl.Map | null>(null),
     watch = useRef<number | null>(null),
     timer = useRef<ReturnType<typeof setInterval> | null>(null),
     simIndex = useRef(0);
   const trail = TRAILS.find((t) => t.id === trailId)!;
+  const baselineHours = estimateBaselineHours(trail);
+  const plannedPaceKmh = trail.distanceKm / baselineHours;
+  const sessionId = session?.id;
   useEffect(() => {
     navigator.serviceWorker?.register("/sw.js");
   }, []);
@@ -133,6 +137,9 @@ export default function LiveHike() {
       .then((data) => setPostHike(data as PostHike))
       .catch(() => setGps("SUMMARY UNAVAILABLE · HIKE SAVED"));
   }, [session?.id, session?.state]);
+  useEffect(() => {
+    if (sessionId) sheet.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [sessionId]);
   useEffect(() => {
     if (!route.length || !container.current) return;
     if (!TOKEN) {
@@ -435,7 +442,7 @@ export default function LiveHike() {
           setGps("SIMULATION COMPLETE · SUMMARY READY");
         }
       },
-      Math.max(450, 1800 / speed),
+      Math.max(90, 1800 / speed),
     );
   }
   return (
@@ -447,7 +454,7 @@ export default function LiveHike() {
           {online ? "ONLINE" : "OFFLINE · BASIC TRACKING"}
         </span>
       </header>
-      <section className="live-sheet">
+      <section className="live-sheet" ref={sheet}>
         {demo && (
           <div className="live-demo-guide">
             <b>HACKATHON DEMO · STEP 3 OF 3</b>
@@ -466,6 +473,22 @@ export default function LiveHike() {
             <h1>{trail.name}</h1>
           </div>
           <span className="gps">● {gps}</span>
+        </div>
+        <div className="pace-overview" aria-label="Live pace comparison">
+          <article>
+            <span>PLANNED PACE</span>
+            <strong>{plannedPaceKmh.toFixed(1)} km/h</strong>
+            <small>Terrain-adjusted baseline</small>
+          </article>
+          <article>
+            <span>ACTUAL PACE</span>
+            <strong>
+              {summary?.currentPaceKmh
+                ? `${summary.currentPaceKmh.toFixed(1)} km/h`
+                : "Starts with GPS or simulation"}
+            </strong>
+            <small>Updates from accepted location readings</small>
+          </article>
         </div>
         {!session && (
           <div className="setup">
@@ -608,7 +631,7 @@ export default function LiveHike() {
             ))}
           </select>
           <label>
-            Speed{" "}
+            Replay speed · {speed}×
             <input
               aria-label="Playback speed"
               type="range"
@@ -616,8 +639,8 @@ export default function LiveHike() {
               max="20"
               value={speed}
               onChange={(e) => setSpeed(+e.target.value)}
-            />{" "}
-            {speed}×
+            />
+            <small>Changes demo playback only—not the modeled hiking pace.</small>
           </label>
           <button onClick={simulating ? stopTracking : startSimulation}>
             {simulating ? "Stop replay" : "Start Simulated Live Hike"}

@@ -29,7 +29,7 @@
   padding: 9px 11px;
   color: #eef7f2;
   text-decoration: none;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 .live-header .online {
@@ -58,17 +58,17 @@
 }
 .live-title p,
 .simulation p {
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: #78f29f;
   margin: 0 0 5px;
 }
 .live-title h1 {
-  font-size: 20px;
+  font-size: clamp(22px, 2.4vw, 32px);
   margin: 0;
 }
 .gps {
-  font-size: 9px;
+  font-size: 12px;
   color: #62bcff;
 }
 .setup {
@@ -78,7 +78,7 @@
 }
 .setup label {
   flex: 1;
-  font-size: 8px;
+  font-size: 12px;
   color: #82968c;
 }
 .setup select,
@@ -86,7 +86,8 @@
 .simulation select,
 .simulation button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
+  font-size: 14px;
   margin-top: 5px;
   background: #10231b;
   border: 1px solid #385247;
@@ -100,12 +101,12 @@
 }
 .live-metrics {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   border: 1px solid #20332b;
   margin: 15px 0;
 }
 .live-metrics article {
-  padding: 10px;
+  padding: 13px;
   border-right: 1px solid #20332b;
 }
 .live-metrics article:last-child {
@@ -117,15 +118,15 @@
   display: block;
 }
 .live-metrics strong {
-  font-size: 16px;
+  font-size: 19px;
 }
 .live-metrics span {
-  font-size: 7px;
+  font-size: 10px;
   color: #71847d;
   margin-top: 4px;
 }
 .live-metrics small {
-  font-size: 7px;
+  font-size: 10px;
   color: #89a197;
 }
 .primary-warning {
@@ -140,7 +141,7 @@
   border-color: #78f29f;
 }
 .primary-warning p {
-  font-size: 7px;
+  font-size: 10px;
   letter-spacing: 1.4px;
   color: #ffb27b;
   margin: 0 0 5px;
@@ -150,10 +151,10 @@
   display: block;
 }
 .primary-warning strong {
-  font-size: 12px;
+  font-size: 15px;
 }
 .primary-warning span {
-  font-size: 9px;
+  font-size: 12px;
   color: #91a59a;
   margin-top: 5px;
 }
@@ -164,7 +165,7 @@
   gap: 7px;
 }
 .next-row span {
-  font-size: 7px;
+  font-size: 11px;
   color: #71847d;
   padding: 9px;
   background: #0c1a15;
@@ -172,7 +173,7 @@
 .next-row b {
   display: block;
   color: #dce9e2;
-  font-size: 9px;
+  font-size: 13px;
   margin-bottom: 4px;
 }
 .live-recommendation {
@@ -189,16 +190,16 @@
 .live-recommendation p {
   margin: 0 0 5px;
   color: #78f29f;
-  font-size: 7px;
+  font-size: 10px;
   letter-spacing: 1.4px;
 }
 .live-recommendation strong {
-  font-size: 11px;
+  font-size: 15px;
 }
 .live-recommendation span {
   margin-top: 5px;
   color: #91a59a;
-  font-size: 8px;
+  font-size: 12px;
 }
 .live-actions {
   display: flex;
@@ -224,30 +225,54 @@
   padding-top: 12px;
 }
 .simulation label {
-  font-size: 8px;
+  font-size: 12px;
   color: #82968c;
 }
 .simulation input {
   width: 100%;
   accent-color: #78f29f;
 }
+.simulation label small {
+  display: block;
+  margin-top: 5px;
+  color: #a8bbb0;
+  font-size: 10px;
+  line-height: 1.35;
+}
 .live-sheet footer {
-  font-size: 7px;
+  font-size: 10px;
   color: #60766a;
   margin-top: 11px;
 }
-.live-demo-guide { display:flex; gap:12px; align-items:center; padding:9px 12px; margin-bottom:12px; background:#78f29f12; border:1px solid #315e43; font-size:9px }
+.live-demo-guide { display:flex; gap:12px; align-items:center; padding:11px 13px; margin-bottom:12px; background:#78f29f12; border:1px solid #315e43; font-size:12px }
 .live-demo-guide b { color:#78f29f }
 .live-demo-guide span { flex:1; color:#a8bbb0 }
 .live-demo-guide a { color:#78f29f }
 .post-hike { margin:13px 0; padding:15px; border:1px solid #3f6d52; background:#0d2118 }
-.post-hike p { font-size:8px; letter-spacing:1.5px; color:#78f29f }
+.post-hike p { font-size:10px; letter-spacing:1.5px; color:#78f29f }
 .post-hike h2 { margin:4px 0 12px }
 .post-hike > div { display:grid; grid-template-columns:repeat(3,1fr); gap:6px }
-.post-hike span { padding:9px; background:#08140f; color:#71847d; font-size:8px }
+.post-hike span { padding:10px; background:#08140f; color:#91a59a; font-size:11px }
 .post-hike span b,.post-hike > strong,.post-hike > small { display:block; color:#e9f3ee; margin-bottom:4px }
-.post-hike > strong { font-size:10px; margin-top:10px }
-.post-hike > small { font-size:8px; color:#82968c }
+.post-hike > strong { font-size:13px; margin-top:10px }
+.post-hike > small { font-size:11px; color:#91a59a }
+.pace-overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 15px 0;
+}
+.pace-overview article {
+  padding: 13px 15px;
+  background: #0c1a15;
+  border: 1px solid #315044;
+}
+.pace-overview span,
+.pace-overview strong,
+.pace-overview small { display: block; }
+.pace-overview span { color: #78f29f; font-size: 10px; letter-spacing: 1.2px; }
+.pace-overview strong { margin-top: 5px; font-size: 18px; }
+.pace-overview small { margin-top: 4px; color: #a8bbb0; font-size: 11px; }
 @media (max-width: 760px) {
   .live-map {
     inset: 0 0 58%;
@@ -257,7 +282,7 @@
     padding: 14px;
   }
   .live-title h1 {
-    font-size: 16px;
+    font-size: 20px;
   }
   .live-metrics {
     grid-template-columns: repeat(3, 1fr);
@@ -274,4 +299,5 @@
   .simulation p {
     grid-column: 1/-1;
   }
+  .pace-overview { grid-template-columns: 1fr; }
 }
