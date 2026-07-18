@@ -2,6 +2,37 @@
 
 Trail-Intel is a personalized hiking decision-support platform with trails in Lebanon and the United States. It ranks trails for a specific day and hiker, explains route effort and environmental exposure, and reuses the same route and pace models in Live Hike Mode.
 
+## How I built Trail-Intel with Codex and GPT-5.6
+
+I developed Trail-Intel through an iterative collaboration with Codex, powered
+by GPT-5.6. I remained the product owner: I defined the problem, supplied and
+cleared the GPX recordings, chose the advanced-hiker use case, and decided which
+signals mattered to hikers. Those decisions included personalized fatigue by
+route segment, an exact “Where will I struggle?” interaction, editable hiker
+profiles, weather and daylight views, daily recommendations, Live Hike Mode,
+and support for both Lebanon and United States trails.
+
+Codex accelerated the engineering loop. It inspected the existing application,
+implemented each milestone without replacing working architecture, converted
+the GPX files into a shared trail catalogue, connected the recommendation and
+live-hike flows to the same deterministic analytics, and added automated tests,
+documentation, deployment configuration, and seeded judge data. During review,
+I tested the product and challenged unclear behavior—such as fatigue colors,
+readiness scoring, map focus, profile controls, weather fallbacks, and live-map
+failures. Codex traced those reports through the code and deployed focused fixes.
+
+GPT-5.6 contributed through Codex as the reasoning and implementation partner:
+it helped translate product feedback into TypeScript and React changes, reason
+across pace, fatigue, weather, daylight, and GPS state, identify integration
+risks, and produce testable fixes. Numeric trail scores are not invented by an
+LLM; they come from the deterministic models in this repository. The optional
+OpenAI briefing interprets supplied evidence but does not alter measurements.
+
+This division of work was deliberate: I made the product, safety, design, and
+scope decisions; Codex made iteration, debugging, validation, and delivery much
+faster. See the [under-three-minute demo video script](docs/final-demo-video-script.md)
+for the complete judge walkthrough.
+
 ## Quick start
 
 Requires Node.js 22.13 or newer.

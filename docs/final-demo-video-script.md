@@ -1,84 +1,85 @@
-# Final Demo Video Script
+# Trail-Intel demo video script
 
-Target length: 2:30. Record at 1920×1080, 30 fps, with browser zoom at 100%. Hide bookmarks, notifications, and personal browser chrome. Use the public URL in a clean session.
+Target runtime: **2 minutes 40 seconds**. Maximum: **2 minutes 55 seconds**.
+Record at 1920×1080 with microphone audio and browser zoom at 100%. Use the
+public `/demo` flow in a clean browser session.
 
-Suggested title: **Trail-Intel: Personalized Hiking Decisions That Adapt Live**
+## 0:00–0:18 — Problem and product
 
-Suggested thumbnail text: **Your Hike, Predicted—and Updated Live**
+**Screen:** Open the Trail-Intel landing page, then click **Try Hackathon Demo**.
 
-## Shot-by-shot narration and clicks
+**Narration:** “Most hiking apps show a route. Trail-Intel answers a harder
+question: how will this route unfold for this hiker, on this day? It combines
+personal capacity, terrain, pace, weather, and daylight before the hike, then
+updates the prediction as the hike progresses.”
 
-### 0:00–0:15 — The problem
+## 0:18–0:52 — Daily recommendation
 
-Screen: Landing page. Pause on the hero and trail map.
+**Screen:** Show date, starting point, available time, hiker profile, preferred
+features, and avoid options. Click **Rank Today’s Trails**.
 
-Narration: “Most hiking apps show where a trail goes and where the hiker is. But a route that is manageable for one person, at one departure time, can unfold very differently for another. Trail-Intel predicts that experience before the hike and updates it as the hike progresses.”
+**Narration:** “The daily engine evaluates the shared trail catalogue using
+deterministic scoring. Barouk is the Best Match for this seeded scenario because
+its distance, ascent, forest and viewpoint features, forecast, and daylight fit
+the selected hiker better than the alternatives. Every result explains its
+score, exclusions, confidence, and evidence.”
 
-Click: **Try Hackathon Demo**.
+**Screen:** Briefly compare Barouk with the two displayed alternatives.
 
-### 0:15–0:45 — Personalized daily recommendations
+## 0:52–1:23 — Personalized trail analytics
 
-Screen: Daily Recommendation inputs. Briefly point to date, available time, starting location, hiker profile, preferences, and avoid options.
+**Screen:** Open Barouk’s full analysis. Show the interactive map, route metrics,
+fatigue colors, elevation chart, and direction. Click **Where will I struggle?**
 
-Narration: “The daily decision engine compares every available Lebanon trail against this hiker’s capacity, schedule, preferences, logistics, forecast evidence, and daylight.”
+**Narration:** “The recommendation opens the same analytics pipeline. GPX
+geometry is divided into segments, then Trail-Intel calculates slope, speed,
+moving time, accumulated fatigue, rest allowance, finish range, and daylight.
+The red segment is this hiker’s highest modeled fatigue section, and the map
+flies to its exact location.”
 
-Click: **Rank Today’s Trails**. Pause two seconds after cards appear.
+## 1:23–2:03 — Adaptive Live Hike
 
-Narration: “Zaarour to Mtein and Mrouj is today’s Best Match at 87. It fits the selected fitness profile and retains a strong daylight margin. Arsoun is more adventurous but hotter, while Dhour el Choueir is easier and closer but matches fewer preferred features.”
+**Screen:** Continue to Live Hike. Select **Slower Than Expected · 23%**, then
+start the simulation. Pause when the pace warning appears.
 
-Zoom: Crop or zoom gently around the three scores and their reason lines.
+**Narration:** “For a repeatable judge demo, simulated GPS readings pass through
+the real Live Hike pipeline. When pace slows by 23 percent, actual pace diverges
+from plan, predicted finish moves later, daylight margin shrinks, and an upcoming
+segment becomes less suitable. The recommendation is generated from measured
+progress, pace, fatigue, weather timing, and daylight—not LLM-generated numbers.”
 
-### 0:45–1:15 — Trail analytics
+## 2:03–2:22 — Completion
 
-Click: Best Match **Open full trail analysis**.
+**Screen:** Complete the simulation and show the post-hike summary.
 
-Screen: Show route signal, map, and elevation-and-effort chart. Pause on the fatigue legend and likely struggle point.
+**Narration:** “At completion, Trail-Intel reports duration, moving and stopped
+time, route deviation, warnings, and final timing. Profile calibration remains
+an opt-in suggestion rather than an automatic change.”
 
-Narration: “The recommendation opens the same shared analytics engine. Trail-Intel models route distance, ascent, moving time, elevation, personalized fatigue, weather timing, and daylight. Segment colors show how effort changes along the actual route, and the likely struggle point is tied to an exact segment—not a generic trail rating.”
+## 2:22–2:48 — How Codex and GPT-5.6 were used
 
-Click: **Where will I struggle?** Pause on the highlighted section.
+**Screen:** Show the GitHub README collaboration section, then return to the app.
 
-### 1:15–2:05 — Adaptive Live Hike
+**Narration:** “I defined the hiking problem, supplied permission-cleared GPX
+data, and made the product and design decisions. I used Codex with GPT-5.6 to
+accelerate implementation, connect the shared analytics across recommendations
+and Live Hike Mode, diagnose browser and deployment failures, and build the test
+suite. I repeatedly tested the experience and directed revisions when the
+fatigue display, profile controls, weather behavior, or maps were unclear.”
 
-Click: **Continue to Live Hike**.
+## 2:48–2:55 — Close
 
-Select: **Slower Than Expected · 23%**.
+**Screen:** End card with the public URL and GitHub repository.
 
-Click: **Start Simulated Live Hike**.
+**Narration:** “Trail-Intel turns a trail line into personalized, explainable,
+adaptive hiking intelligence. It supports decisions; it does not guarantee
+safety.”
 
-Screen: Pause when progress is around 25–35% and the Pace Behind Plan warning is visible.
+## Recording checklist
 
-Narration: “For a reliable judge demo, we replay simulated GPS readings through the real Live Hike pipeline. Here the hiker slows by 23%. Actual pace drops below the plan, predicted finish moves later, and the remaining daylight buffer decreases.”
-
-Zoom: Focus on Actual Pace, Updated Finish, Daylight, and the warning.
-
-Narration: “Trail-Intel also evaluates the timing of upcoming higher-effort sections. When the change becomes material, it generates a structured recommendation from progress, pace, fatigue, route difficulty, weather timing, and daylight—not from language-model-generated numbers.”
-
-Pause: Two seconds on the structured recommendation.
-
-### 2:05–2:25 — Completion and learning
-
-Allow the replay to finish automatically.
-
-Screen: Post-hike summary.
-
-Narration: “At completion, Trail-Intel summarizes actual duration, moving and stopped time, maximum route deviation, warnings, and final predicted finish. It can suggest reviewing the hiker’s typical pace, but never changes the profile without confirmation.”
-
-### 2:25–2:40 — Differentiation
-
-Screen: Keep the summary visible or cut back to the analytics map.
-
-Narration: “Trail-Intel connects personalized planning, explainable segment analytics, and adaptive live guidance in one pipeline. It does not guarantee safety; it gives hikers clearer evidence for decisions before and during a hike.”
-
-End card: Public URL and “No account or GPS permission required for the demo.”
-
-## Screens to record
-
-1. Public landing page.
-2. Recommendation form and three ranked cards.
-3. Best Match analytics, map, fatigue segment, and elevation chart.
-4. Live dashboard before and during slowdown.
-5. Pace warning and structured recommendation.
-6. Post-hike summary.
-
-Avoid long map-loading moments. Pause after each score or metric change, and use editing zooms rather than changing browser zoom during interaction.
+- Keep the final export below three minutes.
+- Record audible narration; do not rely only on captions.
+- Use `/demo` so weather and simulation evidence remain deterministic.
+- Confirm the Mapbox route is interactive before recording.
+- Avoid exposing browser bookmarks, API keys, notifications, or personal data.
+- Leave each changed metric visible long enough for judges to read it.
