@@ -10,6 +10,13 @@ import {
 import type { DailyRequest, Recommendation } from "../../lib/recommendations";
 import "./recommendations.css";
 
+const PROFILE_PRESETS = {
+  beginner: { distanceKm: 7, ascentM: 300, paceKmh: 3.2, packKg: 3 },
+  intermediate: { distanceKm: 12, ascentM: 700, paceKmh: 3.8, packKg: 5 },
+  advanced: DEFAULT_HIKER_PROFILE,
+  demo: DEMO_HIKER_PROFILE,
+} as const;
+
 const today = () =>
   new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Beirut" });
 export default function DailyRecommendations() {
@@ -27,6 +34,9 @@ export default function DailyRecommendations() {
     demo_mode: demo,
   };
   const [form, setForm] = useState<DailyRequest>(initialForm),
+    [profilePreset, setProfilePreset] = useState<keyof typeof PROFILE_PRESETS>(
+      demo ? "demo" : "advanced",
+    ),
     [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">(
       "idle",
     ),
@@ -68,6 +78,7 @@ export default function DailyRecommendations() {
   }
   const resetDemo = () => {
     setForm(initialForm);
+    setProfilePreset(demo ? "demo" : "advanced");
     setGroups([]);
     setPartial(false);
     setError("");
@@ -194,13 +205,26 @@ export default function DailyRecommendations() {
           </label>
           <label>
             Hiker profile
-            <select aria-label="Hiker profile" disabled>
-              <option>
-                {demo
-                  ? "Demo hiker · 11 km / 550 m"
-                  : "Advanced · 18 km / 1,200 m"}
+            <select
+              aria-label="Hiker profile"
+              value={profilePreset}
+              onChange={(e) => {
+                const preset = e.target
+                  .value as keyof typeof PROFILE_PRESETS;
+                setProfilePreset(preset);
+                setForm({ ...form, profile: PROFILE_PRESETS[preset] });
+              }}
+            >
+              <option value="beginner">Beginner · 7 km / 300 m</option>
+              <option value="intermediate">
+                Intermediate · 12 km / 700 m
               </option>
+              <option value="advanced">Advanced · 18 km / 1,200 m</option>
+              {demo && <option value="demo">Demo hiker · 11 km / 550 m</option>}
             </select>
+            <small>
+              Distance and ascent limits used to personalize trail rankings.
+            </small>
           </label>
           <fieldset>
             <legend>Preferred features</legend>
@@ -218,15 +242,29 @@ export default function DailyRecommendations() {
           <fieldset>
             <legend>Avoid</legend>
             {["high_exposure", "remote"].map((x) => (
-              <label className="chip avoid" key={x}>
+              <label
+                className="chip avoid"
+                key={x}
+                title={
+                  x === "remote"
+                    ? "Exclude isolated trails with limited nearby access or assistance."
+                    : undefined
+                }
+              >
                 <input
                   type="checkbox"
                   checked={form.avoid_features.includes(x)}
                   onChange={() => toggle("avoid_features", x)}
                 />
-                {x.replace("_", " ")}
+                {x === "remote"
+                  ? "Remote / isolated trails"
+                  : "High exposure"}
               </label>
             ))}
+            <small>
+              Remote means isolated from populated areas, road access, or nearby
+              assistance.
+            </small>
           </fieldset>
           <button
             className="recommend-button"
