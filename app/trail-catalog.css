@@ -1,0 +1,6 @@
+.trail-picker { display: flex; align-items: center; gap: 8px; }
+.trail-picker > span { font-size: 8px; letter-spacing: 1.3px; color: #71847d; }
+.trail-picker select { max-width: 310px; padding: 9px 30px 9px 10px; border: 1px solid #2b463b; background: #10231b; color: #e9f3ee; font-size: 10px; font-weight: 700; }
+.trail-picker option { background: #10231b; }
+.daily-link { color: #78f29f; text-decoration: none; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+@media (max-width: 700px) { .trail-picker > span { display: none; } .trail-picker select { max-width: 175px; } .avatar { display: none; } }

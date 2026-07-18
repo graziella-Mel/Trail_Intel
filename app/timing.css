@@ -1,0 +1,17 @@
+.pace-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #20322c;
+  border-top: 0;
+}
+
+.pace-details > div {
+  padding: 9px 10px;
+  border-right: 1px solid #20322c;
+  border-bottom: 1px solid #20322c;
+}
+
+.pace-details > div:nth-child(even) { border-right: 0; }
+.pace-details > div:nth-child(n+3) { border-bottom: 0; }
+.pace-details span { display: block; margin-bottom: 4px; color: #71847d; font-size: 7px; letter-spacing: .8px; }
+.pace-details strong { font-size: 11px; }

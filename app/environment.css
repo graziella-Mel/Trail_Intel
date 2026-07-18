@@ -1,0 +1,14 @@
+.hike-date { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; padding: 8px 10px; border: 1px solid #20322c; }
+.hike-date > span { color: #71847d; font-size: 7px; letter-spacing: 1px; }
+.hike-date input { width: auto; margin: 0; border: 0; outline: 0; background: transparent; color: #e9f3ee; color-scheme: dark; font-size: 9px; }
+.environment { margin-top: 15px; padding-top: 14px; border-top: 1px solid #20322c; }
+.environment-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #20322c; }
+.environment-grid > div { padding: 9px; border-right: 1px solid #20322c; border-bottom: 1px solid #20322c; }
+.environment-grid > div:nth-child(even) { border-right: 0; }
+.environment-grid > div:nth-child(n+3) { border-bottom: 0; }
+.environment-grid span { display: block; margin-bottom: 4px; color: #71847d; font-size: 7px; letter-spacing: .7px; }
+.environment-grid strong { font-size: 11px; }
+.environment ul { margin: 9px 0 0; padding: 0; list-style: none; }
+.environment li { margin-top: 5px; padding: 6px 8px; border-left: 2px solid #ff9a57; background: #ff9a570d; color: #d4dfda; font-size: 8px; line-height: 1.4; }
+.weather-clear { margin: 9px 0 0; color: #78f29f; font-size: 8px; }
+.forecast-unavailable { margin: 9px 0 0; padding: 7px 8px; border-left: 2px solid #ff9a57; color: #c8d4cf; background: #ff9a570c; font-size: 8px; line-height: 1.5; }

@@ -1,0 +1,97 @@
+.map-panel > .mapbox-canvas.mapboxgl-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.mapboxgl-canvas {
+  filter: saturate(.72) brightness(.72) contrast(1.12);
+}
+
+.mapboxgl-ctrl-group {
+  background: #09130fe8 !important;
+  border: 1px solid #2a3b35 !important;
+}
+
+.mapboxgl-ctrl button {
+  filter: invert(1) opacity(.75);
+}
+
+.mapboxgl-popup-content {
+  background: #09130f;
+  color: #e9f3ee;
+  border: 1px solid #385047;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px #0008;
+}
+
+.mapboxgl-popup-content strong,
+.mapboxgl-popup-content small { display: block; }
+.mapboxgl-popup-content strong { font-size: 11px; }
+.mapboxgl-popup-content small { font-size: 8px; color: #82958d; margin-top: 4px; }
+.mapboxgl-popup-tip { border-top-color: #09130f !important; }
+.map-panel > .legend,
+.map-panel > .insight,
+.map-panel > .struggle { z-index: 4; }
+
+.struggle-marker {
+  min-width: 150px;
+  padding: 9px 11px;
+  transform: translateY(-8px);
+  border: 1px solid #ff5367;
+  border-left: 4px solid #ff304d;
+  background: #080d0beF;
+  color: #fff;
+  box-shadow: 0 8px 30px #000c, 0 0 24px #ff304d66;
+  pointer-events: none;
+}
+
+.struggle-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 10px;
+  height: 10px;
+  background: #ff304d;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.struggle-marker i {
+  position: absolute;
+  left: 50%;
+  bottom: -24px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #ff304d;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 7px #ff304d55, 0 0 20px #ff304d;
+}
+
+.struggle-marker b,
+.struggle-marker span { display: block; white-space: nowrap; }
+.struggle-marker b { color: #ff6f80; font-size: 8px; letter-spacing: 1px; }
+.struggle-marker span { margin-top: 4px; color: #dce8e3; font-size: 9px; }
+
+.legend .medium { background: #dff16b; }
+.legend b { color: #d8e4df; font-size: 7px; letter-spacing: .7px; }
+.fatigue-popup .mapboxgl-popup-content p { margin: 0 0 5px; color: #78f29f; font-size: 7px; letter-spacing: 1.2px; }
+.fatigue-popup .mapboxgl-popup-content strong { font-size: 17px; }
+.fatigue-popup .mapboxgl-popup-content strong em { margin-left: 5px; color: #ff9a57; font-size: 8px; font-style: normal; text-transform: uppercase; }
+.fatigue-popup .mapboxgl-popup-content small { margin-top: 6px; }
+.segment-timing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 9px; padding-top: 8px; border-top: 1px solid #263a33; }
+.segment-timing span { color: #71847d; font-size: 7px; text-transform: uppercase; }
+.segment-timing b { display: block; margin-bottom: 3px; color: #e9f3ee; font-size: 10px; text-transform: none; white-space: nowrap; }
+.segment-weather { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 7px; }
+.segment-weather span { color: #71847d; font-size: 7px; text-transform: uppercase; }
+.segment-weather b { display: block; color: #e9f3ee; font-size: 10px; text-transform: none; }
+.map-modes { position: absolute; z-index: 5; left: 50%; top: 16px; display: flex; transform: translateX(-50%); border: 1px solid #385047; background: #08120fe8; }
+.map-modes button { padding: 8px 12px; border: 0; border-right: 1px solid #263a33; background: transparent; color: #8ca097; font-size: 8px; font-weight: 700; letter-spacing: .7px; cursor: pointer; }
+.map-modes button:last-child { border-right: 0; }
+.map-modes button.active { background: #78f29f; color: #07110e; }
+.legend .cool { background:#66d9ff; }
+.legend .dark { background:#6f63ff; }

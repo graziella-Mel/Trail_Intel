@@ -1,0 +1,57 @@
+main {
+  overflow-x: hidden;
+}
+
+.workspace {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.map-panel {
+  z-index: 1;
+  isolation: isolate;
+  min-height: 0;
+}
+
+.mapbox-canvas {
+  z-index: 0;
+  overflow: hidden;
+}
+
+.elevation {
+  position: relative;
+  z-index: 2;
+  clear: both;
+  width: 100%;
+  overflow: hidden;
+}
+
+.elevation .chart,
+.elevation .elevation-title,
+.elevation .chart-labels {
+  position: relative;
+  z-index: 1;
+}
+
+.simulation {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #385047 #09130f;
+}
+
+.simulation::-webkit-scrollbar { width: 6px; }
+.simulation::-webkit-scrollbar-track { background: #09130f; }
+.simulation::-webkit-scrollbar-thumb { background: #385047; }
+
+@media (max-width: 900px) {
+  .workspace {
+    overflow: visible;
+  }
+
+  .map-panel {
+    overflow: hidden;
+  }
+}
