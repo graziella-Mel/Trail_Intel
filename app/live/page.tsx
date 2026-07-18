@@ -81,7 +81,9 @@ export default function LiveHike() {
     sheet = useRef<HTMLElement>(null),
     map = useRef<mapboxgl.Map | null>(null),
     watch = useRef<number | null>(null),
-    timer = useRef<ReturnType<typeof setInterval> | null>(null),
+    timer = useRef<ReturnType<typeof setTimeout> | null>(null),
+    speedRef = useRef(speed),
+    syncQueue = useRef<Promise<void>>(Promise.resolve()),
     simIndex = useRef(0);
   const trail = TRAILS.find((t) => t.id === trailId)!;
   const baselineHours = estimateBaselineHours(trail);
@@ -297,6 +299,19 @@ export default function LiveHike() {
     forceNetwork = false,
   ) {
     if (!target) return;
+    if (forceNetwork) {
+      const result = processReading(target, reading);
+      setSession(structuredClone(target));
+      setSummary({ ...result });
+      syncQueue.current = syncQueue.current
+        .then(async () => {
+          await api(`/api/live-hikes/${target.id}/locations`, {
+            readings: [reading],
+          });
+        })
+        .catch(() => queue(reading));
+      return;
+    }
     if (!navigator.onLine && !forceNetwork) {
       const result = processReading(target, reading);
       setSession(structuredClone(target));
@@ -358,7 +373,7 @@ export default function LiveHike() {
   function stopTracking() {
     if (watch.current !== null) navigator.geolocation.clearWatch(watch.current);
     watch.current = null;
-    if (timer.current) clearInterval(timer.current);
+    if (timer.current) clearTimeout(timer.current);
     timer.current = null;
     setSimulating(false);
   }
@@ -389,14 +404,18 @@ export default function LiveHike() {
       predictedPaceKmh = trail.distanceKm / baseline;
     let elapsedHours = 0,
       previousDistanceM = route[0]?.distance || 0;
-    timer.current = setInterval(
-      async () => {
+    const advanceReplay = async () => {
         if (simIndex.current >= route.length - 1) {
           stopTracking();
           return;
         }
         simIndex.current = Math.min(route.length - 1, simIndex.current + step);
         const p = route[simIndex.current],
+          progressRatio = simIndex.current / Math.max(1, route.length - 1),
+          effectivePace =
+            scenario === "slowdown"
+              ? 1 - Math.min(0.23, Math.max(0, progressRatio - 0.15) * 0.46)
+              : cfg.pace,
           segmentDistanceKm = Math.max(
             0,
             (p.distance - previousDistanceM) / 1000,
@@ -418,7 +437,7 @@ export default function LiveHike() {
             speed_mps: null,
             heading_degrees: null,
           };
-        elapsedHours += segmentDistanceKm / (predictedPaceKmh * cfg.pace);
+        elapsedHours += segmentDistanceKm / (predictedPaceKmh * effectivePace);
         previousDistanceM = p.distance;
         reading.timestamp = new Date(started + elapsedHours * 36e5).toISOString();
         await send(reading, live, true);
@@ -434,15 +453,23 @@ export default function LiveHike() {
               live,
               true,
             );
+          await syncQueue.current;
           stopTracking();
           const done = (await api(
             `/api/live-hikes/${live!.id}/finish`,
           )) as LiveSession;
           setSession(done);
           setGps("SIMULATION COMPLETE · SUMMARY READY");
+          return;
         }
-      },
-      Math.max(90, 1800 / speed),
+        timer.current = setTimeout(
+          advanceReplay,
+          Math.max(90, 1800 / speedRef.current),
+        );
+      };
+    timer.current = setTimeout(
+      advanceReplay,
+      Math.max(90, 1800 / speedRef.current),
     );
   }
   return (
@@ -631,15 +658,21 @@ export default function LiveHike() {
             ))}
           </select>
           <label>
-            Replay speed · {speed}×
-            <input
+            Replay speed
+            <select
               aria-label="Playback speed"
-              type="range"
-              min="1"
-              max="20"
               value={speed}
-              onChange={(e) => setSpeed(+e.target.value)}
-            />
+              onChange={(e) => {
+                const nextSpeed = +e.target.value;
+                speedRef.current = nextSpeed;
+                setSpeed(nextSpeed);
+              }}
+            >
+              <option value="1">1× · presentation pace</option>
+              <option value="4">4× · relaxed</option>
+              <option value="8">8× · standard demo</option>
+              <option value="20">20× · fastest</option>
+            </select>
             <small>Changes demo playback only—not the modeled hiking pace.</small>
           </label>
           <button onClick={simulating ? stopTracking : startSimulation}>

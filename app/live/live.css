@@ -228,10 +228,6 @@
   font-size: 12px;
   color: #82968c;
 }
-.simulation input {
-  width: 100%;
-  accent-color: #78f29f;
-}
 .simulation label small {
   display: block;
   margin-top: 5px;
