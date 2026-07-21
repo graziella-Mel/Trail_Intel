@@ -37,6 +37,10 @@ test("keeps deterministic analytics separate from source attribution", async () 
   assert.match(page, /new ResizeObserver\(\(\) => m\.resize\(\)\)/);
   assert.doesNotMatch(page, /map-static-fallback|outdoors-v12\/static/);
   assert.match(page, /Recorded by Rami Rachkidi/);
+  const livePage = await readFile(new URL("../app/live/page.tsx", import.meta.url), "utf8");
+  assert.match(livePage, /Start Real GPS Hike/);
+  assert.match(livePage, /Start Simulated Hike/);
+  assert.match(livePage, /api\/live-weather/);
   assert.match(layout, /title:\s*"Trail-Intel — Personalized Hiking Intelligence"/);
   assert.match(gpx, /<trkpt\b/);
   assert.match(gpx, /Rami Rachkidi/);
