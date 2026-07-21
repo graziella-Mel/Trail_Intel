@@ -93,7 +93,10 @@ export default function LiveHike() {
   const plannedPaceKmh = trail.distanceKm / baselineHours;
   const sessionId = session?.id;
   useEffect(() => {
-    navigator.serviceWorker?.register("/sw.js");
+    navigator.serviceWorker
+      ?.register("/sw.js?v=6", { updateViaCache: "none" })
+      .then((registration) => registration.update())
+      .catch(() => undefined);
   }, []);
   useEffect(() => {
     fetch(trail.file)
