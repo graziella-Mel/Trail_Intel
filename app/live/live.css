@@ -71,6 +71,7 @@
   border-top: 1px solid #385247;
   padding: 18px max(18px, 4vw);
 }
+.live-sheet.session-setup { height: 60%; }
 .live-title {
   display: flex;
   justify-content: space-between;

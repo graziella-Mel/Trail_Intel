@@ -579,7 +579,7 @@ export default function LiveHike() {
           {online ? "ONLINE" : "OFFLINE · BASIC TRACKING"}
         </span>
       </header>
-      <section className="live-sheet" ref={sheet}>
+      <section className={`live-sheet ${session ? "session-active" : "session-setup"}`} ref={sheet}>
         {demo && (
           <div className="live-demo-guide">
             <b>HACKATHON DEMO · STEP 3 OF 3</b>
@@ -599,7 +599,7 @@ export default function LiveHike() {
           </div>
           <span className="gps">● {gps}</span>
         </div>
-        <div className="pace-overview" aria-label="Live pace comparison">
+        {session && <div className="pace-overview" aria-label="Live pace comparison">
           <article>
             <span>PLANNED PACE</span>
             <strong>{plannedPaceKmh.toFixed(1)} km/h</strong>
@@ -614,7 +614,7 @@ export default function LiveHike() {
             </strong>
             <small>Updates from accepted location readings</small>
           </article>
-        </div>
+        </div>}
         {!session && (
           <section className="live-start" aria-label="Choose a Live Hike mode">
             <label className="trail-choice">
