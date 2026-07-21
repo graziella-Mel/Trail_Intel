@@ -29,7 +29,7 @@ test("keeps deterministic analytics separate from source attribution", async () 
   const [page, layout, gpx] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../public/baskinta-trail.gpx", import.meta.url), "utf8"),
+    readFile(new URL("../data/trails/baskinta-trail.gpx", import.meta.url), "utf8"),
   ]);
   assert.match(page, /function calculateSegments/);
   assert.match(page, /const paceSimulation = useMemo/);

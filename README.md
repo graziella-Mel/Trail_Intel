@@ -72,8 +72,10 @@ is needed.
 
 ## Trail catalogue
 
-Place permission-cleared GPX files in `data/import/lebanon-trails/`. Despite the
-legacy directory name, the importer accepts trails from any country. Both
+Place permission-cleared GPX files in `data/trails/`. Every trail and its
+metadata entry live in this single canonical collection. The build generates
+browser-ready route geometry and one catalogue from it. The importer accepts
+trails from any country. Both
 `npm run dev` and `npm run build` regenerate the analytics and shared demo
 catalogue. Judges never upload GPX files.
 

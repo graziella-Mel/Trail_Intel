@@ -1,6 +1,6 @@
 # Daily Hike Recommendation System
 
-Trail-Intel ranks the seven supplied Lebanon GPX trails deterministically. The AI briefing is not used for filtering or scoring.
+Trail-Intel ranks every active trail in the unified GPX catalogue deterministically. The AI briefing is not used for filtering or scoring.
 
 ## Pipeline
 

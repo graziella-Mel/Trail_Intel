@@ -17,7 +17,7 @@ const value = (name: string, fallback: string) => {
   const index = args.indexOf(name);
   return index >= 0 ? args[index + 1] : fallback;
 };
-const directory = resolve(value("--directory", "data/import/lebanon-trails"));
+const directory = resolve(value("--directory", "data/trails"));
 const metadataPath = resolve(value("--metadata", join(directory, "metadata.json")));
 const dryRun = args.includes("--dry-run");
 const ingestedAt =
@@ -90,12 +90,14 @@ for (const item of discovered) {
       detail: item.detail,
       region: item.region,
       country: item.country,
+      ...(item.source_url ? { source: item.source_url } : {}),
       latitude: points[0].lat,
       longitude: points[0].lon,
       ...analytics,
       features: item.tags,
       exposure,
-      confidence: metadataByFile.has(item.file.toLowerCase()) ? 90 : 75,
+      confidence:
+        item.confidence ?? (metadataByFile.has(item.file.toLowerCase()) ? 90 : 75),
       updatedAt: ingestedAt,
       active: true,
       provenance: {
@@ -138,7 +140,7 @@ for (const item of configuredMetadata) {
 if (!dryRun) {
   await mkdir(resolve("data/generated"), { recursive: true });
   await writeFile(
-    resolve("data/generated/imported-trails.json"),
+    resolve("data/generated/trail-catalog.json"),
     JSON.stringify(imports, null, 2) + "\n",
   );
 }

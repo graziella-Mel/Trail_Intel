@@ -1122,7 +1122,7 @@ export default function Home() {
       if (!response.ok)
         throw new Error(
           result.configured === false
-            ? "AI briefing is unavailable. Deterministic route analysis and the hackathon demo remain fully available."
+            ? "AI briefing is not configured on this deployment. Add the hosted OpenAI API key to enable it; route analysis remains available."
             : result.error,
         );
       if (!result.briefing)
