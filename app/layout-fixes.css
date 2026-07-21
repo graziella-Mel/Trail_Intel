@@ -38,8 +38,34 @@ main {
 .simulation {
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  max-width: 100%;
   scrollbar-width: thin;
   scrollbar-color: #385047 #09130f;
+}
+
+.simulation > *,
+.simulation .time,
+.simulation .timing,
+.simulation .pace-details,
+.simulation .environment,
+.simulation .evidence {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.simulation input[type="range"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.simulation .timing > div,
+.simulation .pace-details > div,
+.simulation .environment-grid > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .simulation::-webkit-scrollbar { width: 6px; }
@@ -53,5 +79,11 @@ main {
 
   .map-panel {
     overflow: hidden;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: minmax(210px, 230px) minmax(0, 1fr) minmax(220px, 240px);
   }
 }

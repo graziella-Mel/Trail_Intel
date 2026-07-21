@@ -248,6 +248,7 @@ export default function Home() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const struggleMarker = useRef<mapboxgl.Marker | null>(null);
+  const simulationPanel = useRef<HTMLElement>(null);
   const selectedTrail =
     TRAILS.find((trail) => trail.id === selectedTrailId) || TRAILS[0];
   useEffect(() => {
@@ -513,6 +514,22 @@ export default function Home() {
     !!forecastRange &&
     hikeDate >= forecastRange.min &&
     hikeDate <= forecastRange.max;
+
+  useEffect(() => {
+    const restoreLayout = () =>
+      requestAnimationFrame(() => {
+        if (simulationPanel.current) simulationPanel.current.scrollLeft = 0;
+        map.current?.resize();
+      });
+    window.addEventListener("pageshow", restoreLayout);
+    window.addEventListener("popstate", restoreLayout);
+    window.addEventListener("resize", restoreLayout);
+    return () => {
+      window.removeEventListener("pageshow", restoreLayout);
+      window.removeEventListener("popstate", restoreLayout);
+      window.removeEventListener("resize", restoreLayout);
+    };
+  }, []);
 
   useEffect(() => {
     if (!points.length || !mapContainer.current || map.current) return;
@@ -1375,7 +1392,7 @@ export default function Home() {
           </button>
         </div>
 
-        <aside className="simulation">
+        <aside className="simulation" ref={simulationPanel}>
           <p className="section-label">TIME SIMULATION</p>
           <div className="time">
             <strong>{String(departure).padStart(2, "0")}:00</strong>

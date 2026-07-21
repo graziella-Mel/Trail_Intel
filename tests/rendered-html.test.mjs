@@ -35,6 +35,7 @@ test("keeps deterministic analytics separate from source attribution", async () 
   assert.match(page, /const paceSimulation = useMemo/);
   assert.match(page, /api\.open-meteo\.com\/v1\/forecast/);
   assert.match(page, /new ResizeObserver\(\(\) => m\.resize\(\)\)/);
+  assert.match(page, /addEventListener\("pageshow", restoreLayout\)/);
   assert.doesNotMatch(page, /map-static-fallback|outdoors-v12\/static/);
   assert.match(page, /Recorded by Rami Rachkidi/);
   const livePage = await readFile(new URL("../app/live/page.tsx", import.meta.url), "utf8");
