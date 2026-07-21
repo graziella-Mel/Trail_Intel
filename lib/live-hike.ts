@@ -68,7 +68,8 @@ export type LiveSession = {
     apparent: number;
     rain: number;
     wind: number;
-    source: "seeded-demo" | "live";
+    source: "seeded-demo" | "live" | "unavailable";
+    updatedAt?: string;
   };
   offRouteSince: string | null;
   warnings: LiveWarning[];

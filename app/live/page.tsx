@@ -71,7 +71,9 @@ export default function LiveHike() {
     [scenario, setScenario] =
       useState<keyof typeof SIMULATION_SCENARIOS>("normal"),
     [simulating, setSimulating] = useState(false),
-    [speed, setSpeed] = useState(8);
+    [speed, setSpeed] = useState(8),
+    [sessionKind, setSessionKind] = useState<"real" | "simulation" | null>(null),
+    [weatherStatus, setWeatherStatus] = useState("Not started");
   const online = useSyncExternalStore(
     subscribeOnline,
     () => navigator.onLine,
@@ -84,7 +86,8 @@ export default function LiveHike() {
     timer = useRef<ReturnType<typeof setTimeout> | null>(null),
     speedRef = useRef(speed),
     syncQueue = useRef<Promise<void>>(Promise.resolve()),
-    simIndex = useRef(0);
+    simIndex = useRef(0),
+    lastWeatherRefresh = useRef(0);
   const trail = TRAILS.find((t) => t.id === trailId)!;
   const baselineHours = estimateBaselineHours(trail);
   const plannedPaceKmh = trail.distanceKm / baselineHours;
@@ -284,16 +287,84 @@ export default function LiveHike() {
       );
     return data;
   }
-  async function create() {
+  async function create(weather?: LiveSession["weather"]) {
     const data = (await api("/api/live-hikes", {
       trailId,
       route,
       predictedHours: estimateBaselineHours(trail),
       sunsetHour: 19.75,
+      weather,
     })) as LiveSession;
     setSession(data);
     setSummary(data.summary);
-    setGps("SESSION CREATED");
+    return data;
+  }
+  async function fetchLiveWeather(latitude: number, longitude: number) {
+    const response = await fetch(
+      `/api/live-weather?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`,
+    );
+    const data = (await response.json()) as {
+      apparent?: number;
+      rain?: number;
+      wind?: number;
+      retrievedAt?: string;
+      error?: string;
+    };
+    if (!response.ok) throw new Error(data.error || "Live weather unavailable");
+    return {
+      apparent: Number(data.apparent),
+      rain: Number(data.rain),
+      wind: Number(data.wind),
+      source: "live" as const,
+      updatedAt: data.retrievedAt || new Date().toISOString(),
+    };
+  }
+  async function refreshWeather(
+    target: LiveSession,
+    latitude: number,
+    longitude: number,
+    force = false,
+  ) {
+    if (!force && Date.now() - lastWeatherRefresh.current < 10 * 60 * 1000)
+      return;
+    lastWeatherRefresh.current = Date.now();
+    try {
+      const weather = await fetchLiveWeather(latitude, longitude);
+      const updated = (await api(
+        `/api/live-hikes/${target.id}/weather`,
+        weather,
+      )) as LiveSession;
+      setSession(updated);
+      setSummary(updated.summary);
+      setWeatherStatus(`Live · updated ${new Date(weather.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`);
+    } catch {
+      setWeatherStatus("Live refresh unavailable · retrying automatically");
+    }
+  }
+  async function startRealHike() {
+    if (!route.length) return;
+    setSessionKind("real");
+    setGps("STARTING REAL GPS SESSION");
+    let weather: LiveSession["weather"];
+    try {
+      weather = await fetchLiveWeather(route[0].lat, route[0].lon);
+      setWeatherStatus("Live weather connected");
+      lastWeatherRefresh.current = Date.now();
+    } catch {
+      weather = {
+        apparent: 27,
+        rain: 15,
+        wind: 20,
+        source: "unavailable",
+        updatedAt: new Date().toISOString(),
+      };
+      setWeatherStatus("Live weather unavailable · retrying automatically");
+    }
+    const created = await create(weather);
+    const active = (await api(`/api/live-hikes/${created.id}/start`)) as LiveSession;
+    setSession(active);
+    setSummary(active.summary);
+    startGps(active);
   }
   async function action(name: string) {
     if (!session) return;
@@ -365,9 +436,8 @@ export default function LiveHike() {
       return;
     }
     watch.current = navigator.geolocation.watchPosition(
-      (p) =>
-        send(
-          {
+      (p) => {
+        const reading = {
             session_id: target.id,
             timestamp: new Date(p.timestamp).toISOString(),
             latitude: p.coords.latitude,
@@ -376,9 +446,10 @@ export default function LiveHike() {
             altitude_m: p.coords.altitude,
             speed_mps: p.coords.speed,
             heading_degrees: p.coords.heading,
-          },
-          target,
-        ),
+          };
+        void send(reading, target);
+        void refreshWeather(target, p.coords.latitude, p.coords.longitude);
+      },
       (e) =>
         setGps(
           e.code === 1
@@ -398,6 +469,8 @@ export default function LiveHike() {
     setSimulating(false);
   }
   async function startSimulation() {
+    setSessionKind("simulation");
+    setWeatherStatus("Seeded demo weather · deterministic replay");
     let live = session;
     const baseline = estimateBaselineHours(trail);
     if (!live) {
@@ -510,7 +583,7 @@ export default function LiveHike() {
         {demo && (
           <div className="live-demo-guide">
             <b>HACKATHON DEMO · STEP 3 OF 3</b>
-            <span>Select Slower Than Expected, then start the simulated live hike.</span>
+            <span>Choose Simulated Hike below, select Slower Than Expected, and start the replay.</span>
             <Link
               href="/demo"
               onClick={() => localStorage.removeItem("trailsense-live-queue")}
@@ -543,22 +616,33 @@ export default function LiveHike() {
           </article>
         </div>
         {!session && (
-          <div className="setup">
-            <label>
-              Trail
-              <select
-                value={trailId}
-                onChange={(e) => setTrailId(e.target.value)}
-              >
-                {TRAILS.map((t) => (
-                  <option value={t.id} key={t.id}>
-                    {t.name}
-                  </option>
-                ))}
+          <section className="live-start" aria-label="Choose a Live Hike mode">
+            <label className="trail-choice">
+              <span>1 · SELECT YOUR TRAIL</span>
+              <select value={trailId} onChange={(e) => setTrailId(e.target.value)}>
+                {TRAILS.map((t) => <option value={t.id} key={t.id}>{t.name}</option>)}
               </select>
+              <small>{trail.country} · {trail.region} · {trail.distanceKm} km · {trail.ascentM} m ascent</small>
             </label>
-            <button onClick={create}>Create live session</button>
-          </div>
+            <p className="mode-heading">2 · CHOOSE HOW TO START</p>
+            <div className="mode-options">
+              <article className="mode-card real-mode">
+                <p>REAL HIKE SESSION</p>
+                <h2>Use my phone’s GPS</h2>
+                <span>Tracks your actual location, pace, progress, fatigue, finish time, daylight, and refreshed live weather.</span>
+                <ul><li>Requires location permission</li><li>Keep this page open during the hike</li><li>Weather refreshes every 10 minutes</li></ul>
+                <button onClick={startRealHike}>Start Real GPS Hike</button>
+              </article>
+              <article className="mode-card simulation-mode">
+                <p>SIMULATED HIKE</p>
+                <h2>Run the judge-friendly replay</h2>
+                <span>Uses generated locations through the same pace, fatigue, warning, and completion pipeline.</span>
+                <label>Scenario<select aria-label="Simulation scenario" value={scenario} onChange={(e) => setScenario(e.target.value as keyof typeof SIMULATION_SCENARIOS)}>{Object.entries(SIMULATION_SCENARIOS).map(([id, s]) => <option value={id} key={id}>{s.label}</option>)}</select></label>
+                <label>Replay speed<select aria-label="Playback speed" value={speed} onChange={(e) => { const nextSpeed = +e.target.value; speedRef.current = nextSpeed; setSpeed(nextSpeed); }}><option value="1">1× · presentation pace</option><option value="4">4× · relaxed</option><option value="8">8× · standard demo</option><option value="20">20× · fastest</option></select></label>
+                <button onClick={startSimulation}>Start Simulated Hike</button>
+              </article>
+            </div>
+          </section>
         )}
         {session && (
           <>
@@ -595,7 +679,7 @@ export default function LiveHike() {
                 <span>GPS ACCURACY</span>
               </article>
               <article><strong>{summary?.fatigueScore ?? "—"}/100</strong><span>FATIGUE</span></article>
-              <article><strong>{summary?.weatherSuitability ?? "—"}/100</strong><span>WEATHER FIT</span></article>
+              <article><strong>{summary?.weatherSuitability ?? "—"}/100</strong><span>WEATHER FIT</span><small>{weatherStatus}</small></article>
             </div>
             {summary?.primaryWarning ? (
               <div
@@ -640,19 +724,19 @@ export default function LiveHike() {
               </div>
             )}
             <div className="live-actions">
-              {session.state === "CREATED" && (
-                <button onClick={() => action("start")}>Start GPS hike</button>
-              )}
-              {session.state === "ACTIVE" && (
+              {sessionKind === "real" && session.state === "ACTIVE" && (
                 <button onClick={() => action("pause")}>Pause</button>
               )}
-              {session.state === "PAUSED" && (
+              {sessionKind === "real" && session.state === "PAUSED" && (
                 <button onClick={() => action("resume")}>Resume</button>
               )}
-              {["ACTIVE", "PAUSED"].includes(session.state) && (
+              {sessionKind === "real" && ["ACTIVE", "PAUSED"].includes(session.state) && (
                 <button className="finish" onClick={() => action("finish")}>
                   Finish
                 </button>
+              )}
+              {sessionKind === "simulation" && simulating && (
+                <button className="finish" onClick={stopTracking}>Stop simulation</button>
               )}
             </div>
           </>
@@ -667,43 +751,6 @@ export default function LiveHike() {
             <strong>{postHike.profileCalibrationSuggestion}</strong><small>No profile change is applied without your confirmation.</small>
           </section>
         )}
-        <div className="simulation">
-          <p>DEMO REPLAY · SAME LIVE PIPELINE</p>
-          <select
-            aria-label="Simulation scenario"
-            value={scenario}
-            onChange={(e) =>
-              setScenario(e.target.value as keyof typeof SIMULATION_SCENARIOS)
-            }
-          >
-            {Object.entries(SIMULATION_SCENARIOS).map(([id, s]) => (
-              <option value={id} key={id}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-          <label>
-            Replay speed
-            <select
-              aria-label="Playback speed"
-              value={speed}
-              onChange={(e) => {
-                const nextSpeed = +e.target.value;
-                speedRef.current = nextSpeed;
-                setSpeed(nextSpeed);
-              }}
-            >
-              <option value="1">1× · presentation pace</option>
-              <option value="4">4× · relaxed</option>
-              <option value="8">8× · standard demo</option>
-              <option value="20">20× · fastest</option>
-            </select>
-            <small>Changes demo playback only—not the modeled hiking pace.</small>
-          </label>
-          <button onClick={simulating ? stopTracking : startSimulation}>
-            {simulating ? "Stop replay" : "Start Simulated Live Hike"}
-          </button>
-        </div>
         <footer>
           Keep this page in the foreground. Browser background GPS is not
           guaranteed. Raw location stays in this live session and queued

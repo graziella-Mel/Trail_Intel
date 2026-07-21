@@ -19,7 +19,7 @@
 ## Production limitations
 
 - Live sessions and recommendation lookups are in-memory and do not survive restart or multi-instance deployment.
-- Open-Meteo supplies daily recommendation forecasts; full hourly live weather rematching still requires a durable forecast snapshot per session.
+- Open-Meteo supplies daily recommendation forecasts and refreshes current conditions during real GPS sessions. A durable hourly forecast snapshot per session remains a production improvement.
 - Service-worker caching covers the Live page and GPX tracks; offline location storage uses browser local storage rather than IndexedDB.
 - Browser GPS is foreground-only and requires real-device field validation.
 

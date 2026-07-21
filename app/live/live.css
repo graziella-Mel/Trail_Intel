@@ -119,6 +119,53 @@
   color: #07110e;
   font-weight: 800;
 }
+.live-start {
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid #315044;
+  background: #0a1813;
+}
+.trail-choice { display: block; }
+.trail-choice > span,
+.mode-heading {
+  display: block;
+  margin: 0 0 8px;
+  color: #78f29f;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+.trail-choice select {
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 44px 12px 14px;
+  background: #10231b;
+  border: 2px solid #4b7060;
+  color: #f3fbf7;
+  font-size: 17px;
+  font-weight: 700;
+}
+.trail-choice small { display: block; margin-top: 7px; color: #a8bbb0; font-size: 12px; }
+.mode-heading { margin-top: 22px; }
+.mode-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: 18px;
+  border: 2px solid #385247;
+  background: #0c1d17;
+}
+.mode-card.real-mode { border-color: #55b8ff; }
+.mode-card.simulation-mode { border-color: #d2a83b; }
+.mode-card p { margin: 0 0 6px; color: #78f29f; font-size: 10px; font-weight: 800; letter-spacing: 1.3px; }
+.mode-card h2 { margin: 0 0 8px; font-size: 21px; }
+.mode-card > span { color: #b1c3ba; font-size: 13px; line-height: 1.5; }
+.mode-card ul { margin: 13px 0; padding-left: 18px; color: #91a59a; font-size: 12px; line-height: 1.6; }
+.mode-card label { margin-top: 10px; color: #a8bbb0; font-size: 11px; }
+.mode-card select { width: 100%; padding: 10px; margin-top: 4px; background: #07130f; border: 1px solid #486759; color: #eef7f2; font-size: 13px; }
+.mode-card button { width: 100%; margin-top: auto; padding: 13px; border: 0; background: #78f29f; color: #07110e; font-size: 14px; font-weight: 900; }
+.simulation-mode button { background: #ffd84d; }
 .live-metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -316,6 +363,9 @@
     grid-column: 1/-1;
   }
   .pace-overview { grid-template-columns: 1fr; }
+  .live-start { padding: 13px; }
+  .mode-options { grid-template-columns: 1fr; }
+  .mode-card { min-height: 0; }
   .live-map-key {
     top: 58px;
     right: 12px;
