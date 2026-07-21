@@ -111,7 +111,7 @@ export default function DailyRecommendations() {
         <p>DETERMINISTIC DAILY RANKING</p>
         <h1>Where should you hike?</h1>
         <span>
-          Compare every available Lebanon trail against your time, fitness,
+          Compare every available trail against your time, fitness,
           preferences, forecast, and daylight.
         </span>
       </section>
@@ -286,7 +286,7 @@ export default function DailyRecommendations() {
           {status === "idle" && (
             <div className="empty">
               <b>{TRAIL_CATALOG.length}</b>
-              <h2>Lebanon trails ready to compare</h2>
+              <h2>Trails ready to compare</h2>
               <p>
                 Set your constraints, then rank the routes with the same
                 evidence used in full trail analysis.

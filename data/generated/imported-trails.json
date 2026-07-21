@@ -1,5 +1,37 @@
 [
   {
+    "id": "curated-arz-jaj-lmt-geotrail",
+    "file": "/derived-routes/curated-arz-jaj-lmt-geotrail.json",
+    "name": "Arz Jaj Lmt Geotrail",
+    "detail": "Curated Lebanon hiking route",
+    "region": "Lebanon",
+    "country": "Lebanon",
+    "latitude": 34.14934,
+    "longitude": 35.824001,
+    "distanceKm": 6,
+    "ascentM": 335,
+    "highPointM": 1784,
+    "difficulty": "easy",
+    "features": [],
+    "exposure": "medium",
+    "confidence": 75,
+    "updatedAt": "2026-07-18T00:00:00Z",
+    "active": true,
+    "provenance": {
+      "sourceType": "user_provided",
+      "sourcePlatform": null,
+      "sourceUrl": null,
+      "sourceAuthor": null,
+      "contributionDate": "owner-curated",
+      "permissionToUse": true,
+      "publicDownloadAllowed": false,
+      "visibility": "public",
+      "gpxChecksum": "156b1e0b96d78204d82206818a4bbbd79a931695f8e1f67f6d5b722d7cff63c3",
+      "ingestedAt": "2026-07-18T00:00:00Z",
+      "analyticsVersion": "2026.07"
+    }
+  },
+  {
     "id": "dhour-el-choueir",
     "file": "/derived-routes/dhour-el-choueir.json",
     "name": "Dhour el Choueir Forest and Old Village Stairs",
