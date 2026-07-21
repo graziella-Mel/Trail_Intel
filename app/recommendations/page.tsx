@@ -24,11 +24,13 @@ export default function DailyRecommendations() {
   const initialForm: DailyRequest = {
     date: demo ? "2026-07-25" : today(),
     preferred_departure_time: "07:00",
-    starting_location: { latitude: 33.8938, longitude: 35.5018 },
+    starting_location: demo
+      ? { latitude: 40.7702, longitude: -73.9637 }
+      : { latitude: 33.8938, longitude: 35.5018 },
     maximum_drive_minutes: 90,
-    available_total_hours: 8,
+    available_total_hours: demo ? 12 : 8,
     preferred_difficulty: ["moderate"],
-    preferred_features: ["forest", "viewpoint"],
+    preferred_features: demo ? ["park", "city_view"] : ["forest", "viewpoint"],
     avoid_features: ["high_exposure"],
     profile: demo ? DEMO_HIKER_PROFILE : DEFAULT_HIKER_PROFILE,
     demo_mode: demo,

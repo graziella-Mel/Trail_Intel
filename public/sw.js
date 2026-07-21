@@ -1,5 +1,5 @@
-const CACHE="trail-intel-live-v4";
-const ROUTES=["arsoun","curated-arz-jaj-lmt-geotrail","barouk","baskinta","cedars-lake","dhour-el-choueir","ehden","falougha-summit","hbaline-ghost-town","jouar-el-haouz","kfardebian-roman-bridge","mount-baker-chain-lakes","point-state-emerald-view","sannine-loop","zaarour-balouh-valley"];
+const CACHE="trail-intel-live-v5";
+const ROUTES=["arsoun","curated-arz-jaj-lmt-geotrail","barouk","baskinta","cedars-lake","dhour-el-choueir","ehden","falougha-summit","hbaline-ghost-town","jouar-el-haouz","kfardebian-roman-bridge","mount-baker-chain-lakes","new-york-central-park-xtreme","point-state-emerald-view","roosevelt-island-manhattan","sannine-loop","zaarour-balouh-valley"];
 const ASSETS=ROUTES.map(id=>`/derived-routes/${id}.json`);
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));

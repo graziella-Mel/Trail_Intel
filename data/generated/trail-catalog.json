@@ -431,6 +431,43 @@
     }
   },
   {
+    "id": "new-york-central-park-xtreme",
+    "file": "/derived-routes/new-york-central-park-xtreme.json",
+    "name": "New York Central Park Xtreme",
+    "detail": "Extended Central Park circuit through Manhattan",
+    "region": "New York",
+    "country": "United States",
+    "latitude": 40.774713,
+    "longitude": -73.964215,
+    "distanceKm": 14.1,
+    "ascentM": 294,
+    "highPointM": 43,
+    "difficulty": "moderate",
+    "features": [
+      "park",
+      "city_view",
+      "urban",
+      "lake"
+    ],
+    "exposure": "medium",
+    "confidence": 82,
+    "updatedAt": "2026-07-18T00:00:00Z",
+    "active": true,
+    "provenance": {
+      "sourceType": "user_provided",
+      "sourcePlatform": null,
+      "sourceUrl": null,
+      "sourceAuthor": null,
+      "contributionDate": "2026-07-21",
+      "permissionToUse": true,
+      "publicDownloadAllowed": false,
+      "visibility": "public",
+      "gpxChecksum": "294ccbe76ae7162f3123019e1b87b4fff82e6342c60394187ecb3860b25020be",
+      "ingestedAt": "2026-07-18T00:00:00Z",
+      "analyticsVersion": "2026.07"
+    }
+  },
+  {
     "id": "point-state-emerald-view",
     "file": "/derived-routes/point-state-emerald-view.json",
     "name": "Point State to Emerald View Trail",
@@ -462,6 +499,43 @@
       "publicDownloadAllowed": false,
       "visibility": "public",
       "gpxChecksum": "151313503c025fabbd1adf47518066d4c5fc826487bb0765c9631e5f29fe8ee9",
+      "ingestedAt": "2026-07-18T00:00:00Z",
+      "analyticsVersion": "2026.07"
+    }
+  },
+  {
+    "id": "roosevelt-island-manhattan",
+    "file": "/derived-routes/roosevelt-island-manhattan.json",
+    "name": "Roosevelt Island and Manhattan",
+    "detail": "Urban river route connecting Roosevelt Island and Manhattan",
+    "region": "New York",
+    "country": "United States",
+    "latitude": 40.757842,
+    "longitude": -73.955722,
+    "distanceKm": 25.3,
+    "ascentM": 1886,
+    "highPointM": 344,
+    "difficulty": "advanced",
+    "features": [
+      "river",
+      "city_view",
+      "urban",
+      "long_distance"
+    ],
+    "exposure": "medium",
+    "confidence": 78,
+    "updatedAt": "2026-07-18T00:00:00Z",
+    "active": true,
+    "provenance": {
+      "sourceType": "user_provided",
+      "sourcePlatform": null,
+      "sourceUrl": null,
+      "sourceAuthor": null,
+      "contributionDate": "2026-07-21",
+      "permissionToUse": true,
+      "publicDownloadAllowed": false,
+      "visibility": "public",
+      "gpxChecksum": "2675dee421cfa70604a952776c54e76c35ced2208a8981df9788fcd947ae6b93",
       "ingestedAt": "2026-07-18T00:00:00Z",
       "analyticsVersion": "2026.07"
     }
