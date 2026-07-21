@@ -175,13 +175,23 @@ export default function LiveHike() {
     m.on("load", () => {
       m.addSource("planned", { type: "geojson", data: line(route) });
       m.addLayer({
+        id: "remaining-outline",
+        type: "line",
+        source: "planned",
+        paint: {
+          "line-color": "#07110e",
+          "line-width": 13,
+          "line-opacity": 0.95,
+        },
+      });
+      m.addLayer({
         id: "remaining",
         type: "line",
         source: "planned",
         paint: {
-          "line-color": "#78f29f",
-          "line-width": 6,
-          "line-opacity": 0.9,
+          "line-color": "#ffd84d",
+          "line-width": 7,
+          "line-opacity": 1,
         },
       });
       m.addSource("completed", {
@@ -189,10 +199,20 @@ export default function LiveHike() {
         data: line(route.slice(0, 2)),
       });
       m.addLayer({
+        id: "done-outline",
+        type: "line",
+        source: "completed",
+        paint: {
+          "line-color": "#07110e",
+          "line-width": 14,
+          "line-opacity": 0.95,
+        },
+      });
+      m.addLayer({
         id: "done",
         type: "line",
         source: "completed",
-        paint: { "line-color": "#ffffff", "line-width": 7 },
+        paint: { "line-color": "#27c7ff", "line-width": 8 },
       });
       m.addSource("live-user", {
         type: "geojson",
@@ -210,10 +230,10 @@ export default function LiveHike() {
         type: "circle",
         source: "live-user",
         paint: {
-          "circle-radius": 8,
-          "circle-color": "#55b8ff",
+          "circle-radius": 9,
+          "circle-color": "#ff5367",
           "circle-stroke-color": "#fff",
-          "circle-stroke-width": 3,
+          "circle-stroke-width": 4,
         },
       });
     });
@@ -475,6 +495,11 @@ export default function LiveHike() {
   return (
     <main className="live-page">
       <div ref={container} className="live-map" />
+      <div className="live-map-key" aria-label="Live route map legend">
+        <span><i className="remaining-route" />Route ahead</span>
+        <span><i className="completed-route" />Completed</span>
+        <span><i className="current-location" />Current location</span>
+      </div>
       <header className="live-header">
         <Link href="/">TI · TRAIL-INTEL</Link>
         <span className={online ? "online" : "offline"}>
